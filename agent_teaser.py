@@ -11,7 +11,8 @@ import os
 import sys
 import requests
 from dotenv import load_dotenv
-from openai import OpenAI
+#from openai import OpenAI
+from groq import Groq
 
 # Ensure emoji/arrows render on Windows terminals (cp1252 default).
 # Harmless on macOS/Linux, which are already UTF-8. Guarded for older Pythons.
@@ -21,13 +22,13 @@ if hasattr(sys.stdout, "reconfigure"):
 load_dotenv()
 
 API_URL = os.getenv("API_URL", "http://localhost:8000")
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-
+#client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
 def think(task_description: str) -> str:
     """Agent decides what action to take."""
     response = client.chat.completions.create(
-        model=os.getenv("LLM_MODEL", "gpt-4.1-mini"),
+        model=os.getenv("LLM_MODEL", "llama-3.3-70b-versatile"),
         messages=[
             {
                 "role": "system",
